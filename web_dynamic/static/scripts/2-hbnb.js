@@ -1,33 +1,17 @@
-const $ = window.$;
-$(function () {
-  const amenitiesList = [];
-  $("input[type=checkbox]").prop("checked", false);
-
-  $(".amenities h4").css({
-    width: "100%",
-    height: "100%",
-    "white-space": "nowrap",
-    overflow: "hidden",
-    "text-overflow": "ellipsis",
-    "padding-bottom": "16px",
-  });
-
-  $('input[type="checkbox"]').click(function () {
-    const $checkbox = $(this);
-    if ($checkbox.prop("checked") === true) {
-      amenitiesList.push($checkbox.data("name"));
+$("document").ready(function () {
+  const amenities = {};
+  $('INPUT[type="checkbox"]').change(function () {
+    if ($(this).is(":checked")) {
+      amenities[$(this).attr("data-id")] = $(this).attr("data-name");
     } else {
-      amenitiesList.forEach((elemt, index) => {
-        if (elemt === $checkbox.data("name")) {
-          amenitiesList.splice(index, 1);
-        }
-      });
+      delete amenities[$(this).attr("data-id")];
     }
-    $(".amenities h4").text(amenitiesList.join(", "));
+    $(".amenities H4").text(Object.values(amenities).join(", "));
   });
 });
 
-/* code for task 3 */
+// Task 3 - API status
+
 $(document).ready(function () {
   $.get("http://localhost:5001/api/v1/status/", function (data) {
     if (data.status === "OK") {
